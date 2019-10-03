@@ -1,0 +1,19 @@
+{
+  "name": "webconferencebackend",
+  "version": "1.0.0",
+  "description": "the backend that supports the webconference app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmmcosta/WebConferenceBackend.git"
+  },
+  "author": "rmmcosta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rmmcosta/WebConferenceBackend/issues"
+  },
+  "homepage": "https://github.com/rmmcosta/WebConferenceBackend#readme"
+}
