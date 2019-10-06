@@ -28,3 +28,5 @@ app.use(session({
 
 //
 app.use(validator());
+
+app.use(router());
