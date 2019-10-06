@@ -5,7 +5,6 @@ const passport = require('passport');
 const session = require('express-session');
 const sanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
-const validator = require('express-validator');
 
 app.use(cookieParser());
 
@@ -26,7 +25,4 @@ app.use(session({
     }
 }));
 
-//
-app.use(validator());
-
-app.use(router());
+app.use('/',router);
