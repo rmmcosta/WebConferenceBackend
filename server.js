@@ -35,7 +35,7 @@ const corsOptions = {
 }
 
 //use cors
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.all('/', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
