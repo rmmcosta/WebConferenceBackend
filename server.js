@@ -18,6 +18,7 @@ app.use('/views', express.static('views'));
 const whitelist = ['localhost', '127.0.0.1', '109.49.176.10'];
 const corsOptions = {
     origin: function (origin, callback) {
+        console.log(origin);
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
