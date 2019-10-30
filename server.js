@@ -15,22 +15,22 @@ app.use('/views', express.static('views'));
 
 //restrict access with cors()
 //Configuring CORS w/ Dynamic Origin
-// const whitelist = ['localhost','127.0.0.1'];
-// const corsOptions = {
-//     origin: function(origin, callback) {
-//         console.log(origin);
-//         let isFromWhiteOrigin = origin===undefined || whitelist.indexOf(origin)>-1;
-//         if(isFromWhiteOrigin) {
-//             //callback with signature function(req,res)
-//             callback(null,true);
-//         } else {
-//             callback(new Error('Not allowed by CORS!'));
-//         }
-//     }
-// };
+const whitelist = ['localhost','127.0.0.1','109.49.176.10'];
+const corsOptions = {
+    origin: function(origin, callback) {
+        console.log(origin);
+        let isFromWhiteOrigin = origin===undefined || whitelist.indexOf(origin)>-1;
+        if(isFromWhiteOrigin) {
+            //callback with signature function(req,res)
+            callback(null,true);
+        } else {
+            callback(new Error('Not allowed by CORS!'));
+        }
+    }
+};
 
 //use cors
-// app.use(cors(corsOptions));
+ app.use(cors(corsOptions));
 
 //start the app on the given port
 const listenHandler = (err) => {
