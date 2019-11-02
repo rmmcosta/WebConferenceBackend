@@ -4,7 +4,15 @@ const jsonMessages = require(jsonMessagesFolder+"db");
 
 const saveParticipant = function (req,res){
     console.log(req);
-    return true;
+    res.send('ok');
+}
+
+const readParticipants = function(req, res) {
+    res.send('ok');
+}
+
+const deleteParticipant = function(req,res) {
+    res.send('ok');
 }
 
 /*function(req,res){
