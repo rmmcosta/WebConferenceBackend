@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { check, validationResult } = require('express-validator');
 const controllerParticipant = require('../controllers/participant.controller');
-const jsonMessagesFolder = __dirname + "../assets/jsonMessages/";
-const jsonMessages = require(jsonMessagesFolder+"db");
+const jsonMessagesFolder = __dirname + "/../assets/jsonMessages/";
+const jsonMessages = require(jsonMessagesFolder+"login");
 
 //root route
 rooter.get('/', function(req,res){
