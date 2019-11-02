@@ -1,5 +1,5 @@
 const connect = require('../config/connectMySQL');
-const jsonMessagesFolder = __dirname + "../assets/jsonMessages/";
+const jsonMessagesFolder = __dirname + "/../assets/jsonMessages/";
 const jsonMessages = require(jsonMessagesFolder+"db");
 
 const saveParticipant = function (req,res){
