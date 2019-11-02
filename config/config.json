@@ -1,0 +1,9 @@
+{
+    "MySQL": {
+        "host":"109.49.189.19",
+        "user":"webconferenceadmin",
+        "password":"914423167",
+        "database":"webconference",
+        "dialect":"mysql"
+    }
+}

@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const { check, validationResult } = require('express-validator');
 const controllerParticipant = require('../controllers/participant.controller');
 const jsonMessagesFolder = __dirname + "/../assets/jsonMessages/";
-const jsonMessages = require(jsonMessagesFolder+"login");
+const jsonMessages = require(jsonMessagesFolder + "login");
+const { sanitizeParam, body, check, validationResult } = require('express-validator');
 
 //root route
-rooter.get('/', function(req,res){
+router.get('/', function (req, res) {
     res.send('RMMCosta version of a WebConference!');
     res.end();
 });
@@ -13,14 +13,21 @@ rooter.get('/', function(req,res){
 //participants
 router.get('/conferences/:idconf/participants',
     controllerParticipant.readParticipants);
-router.post('/conferences/:idconf/participants/:idparticipant',
-    controllerParticipant.saveParticipant);
+
 router.delete('/conferences/:idconf/participants/:idparticipant',
     isLoggedIn, controllerParticipant.deleteParticipant);
 
+router.post('/conferences/:idconf/participants/:idparticipant', [
+    sanitizeParam('idconf').trim().escape(),
+    sanitizeParam('idparticipant').trim().escape(),
+    body('name').trim().escape().not().isEmpty(),
+    check('idconf').not().isEmpty(),
+    check('idparticipant').isEmail()
+], controllerParticipant.saveParticipant);
+
 //local functions
-function isLoggedIn(req,res,next) {
-    if(req.isAuthenticated()) {
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
         return next();
     } else {
         res.status(jsonMessages.login.unauthorized.status)

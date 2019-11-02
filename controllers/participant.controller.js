@@ -1,10 +1,18 @@
 const connect = require('../config/connectMySQL');
 const jsonMessagesFolder = __dirname + "/../assets/jsonMessages/";
 const jsonMessages = require(jsonMessagesFolder+"db");
+const { check, validationResult} = require('express-validator');
 
 const saveParticipant = function (req,res){
-    console.log(req);
-    res.send('ok');
+    const errors = validationResult(req);
+    console.log(errors);
+    if(!errors.isEmpty()) {
+        return res.status(422).json({errors:errors.array()});
+    }
+    console.log(req.params.idconf);
+    console.log(req.params.idparticipant);
+    console.log(req.body.name);
+    res.send('need to implement the logic to save the data in the database');
 }
 
 const readParticipants = function(req, res) {
