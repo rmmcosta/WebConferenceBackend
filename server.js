@@ -15,7 +15,7 @@ app.use('/views', express.static('views'));
 
 //restrict access with cors()
 //Configuring CORS w/ Dynamic Origin
-const whitelist = ['localhost', '127.0.0.1', '109.49.176.10'];
+const whitelist = ['localhost', '127.0.0.1', '109.49.176.10', '109.49.189.19', process.env.IP];
 const corsOptions = {
     origin: function (origin, callback) {
         console.log(origin);
