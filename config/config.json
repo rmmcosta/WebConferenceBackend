@@ -1,9 +1,23 @@
 {
-    "MySQL": {
-        "host":"109.49.189.19",
-        "user":"webconferenceadmin",
-        "password":"914423167",
-        "database":"webconference",
-        "dialect":"mysql"
+    "development": {
+        "host": "109.49.189.19",
+        "username": "webconferenceadmin",
+        "password": "914423167",
+        "database": "webconference",
+        "dialect": "mysql"
+    },
+    "test": {
+        "host": "109.49.189.19",
+        "username": "webconferenceadmin",
+        "password": "914423167",
+        "database": "webconference",
+        "dialect": "mysql"
+    },
+    "production": {
+        "host": "109.49.189.19",
+        "username": "webconferenceadmin",
+        "password": "914423167",
+        "database": "webconference",
+        "dialect": "mysql"
     }
 }

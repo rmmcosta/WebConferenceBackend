@@ -25,6 +25,9 @@
     "express-session": "^1.16.2",
     "express-validator": "^6.2.0",
     "mysql": "^2.17.1",
-    "passport": "^0.4.0"
+    "mysql2": "^2.0.0",
+    "passport": "^0.4.0",
+    "sequelize": "^5.21.2",
+    "sequelize-cli": "^5.5.1"
   }
 }
