@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING
   }, {});
   Participant.associate = function(models) {
-    // associations can be defined here
+    Participant.belongsToMany(models.Conference,{through:'conf_participant'});
   };
   return Participant;
 };
