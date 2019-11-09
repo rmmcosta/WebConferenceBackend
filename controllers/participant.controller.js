@@ -20,7 +20,55 @@ const saveParticipant = function (req, res) {
     // console.log(req.params.idconf);
     // console.log(req.params.idparticipant);
     // console.log(req.body.name);
-    Participant.create({
+
+    //only create the participant if not exists already
+
+    Participant.findOrCreate(
+        {
+            where: { email: req.params.idparticipant },
+            defaults: {
+                name: req.body.name,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+        })
+        .then(([participant, participantcreated]) => {
+            if (participant) {
+                ConfParticipant.findOrCreate(
+                    {
+                        where: {
+                            ConferenceId: req.params.idconf,
+                            ParticipantId: participant.id
+                        },
+                        defaults: {
+                            createdAt: new Date(),
+                            updatedAt: new Date()
+                        }
+                    })
+                    .then(([confparticipant, confparticipantcreated]) => {
+                        if (!confparticipant) {
+                            res.status(400).send('Error in insert new participant!');
+                            return;
+                        }
+                        if (participantcreated) {
+                            res.send('Participant registered with Success!');
+                            return;
+                        }
+                        if (confparticipantcreated) {
+                            res.send('Participant registered with Success!');
+                        } else {
+                            res.send('Participant already registered for this conference!');
+                        }
+                    });
+            } else {
+                res.status(400).send('Error in insert new participant!');
+            }
+        });
+
+    // This is the logic to use if we don't want to check if 
+    // the participant already exists and if it's already added to
+    // the conference
+    /*Participant.create({
         name: req.body.name,
         email: req.params.idparticipant,
         createdAt: new Date(),
@@ -42,7 +90,7 @@ const saveParticipant = function (req, res) {
         } else {
             res.status(400).send('Error in insert new participant!');
         }
-    });
+    });*/
 }
 
 const readParticipants = function (req, res) {
