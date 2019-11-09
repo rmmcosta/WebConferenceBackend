@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   speaker.associate = function(models) {
     speaker.belongsTo(models.speakertype);
-    speaker.belongsToMany(models.Conferece,{through:'conf_speaker'});
+    speaker.belongsToMany(models.Conference,{through:'conf_speaker'});
   };
   return speaker;
 };

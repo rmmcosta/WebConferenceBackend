@@ -6,6 +6,8 @@ const index = require('./../models/index');
 const Sequelize = index.Sequelize;
 const sequelize = index.sequelize;
 const ParticipantModel = require('./../models/participant');
+const ConfParticipantModel = require('./../models/conf_participant');
+const ConfParticipant = ConfParticipantModel(sequelize, Sequelize);
 const Participant = ParticipantModel(sequelize, Sequelize);
 //console.log(Participant);
 
@@ -25,8 +27,18 @@ const saveParticipant = function (req, res) {
         updatedAt: new Date()
     }).then(function (participant) {
         if (participant) {
-            //console.log(participant);
-            res.send(participant);
+            ConfParticipant.create({
+                ConferenceId: req.params.idconf,
+                ParticipantId: participant.id,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }).then(function (confparticipant) {
+                if (confparticipant) {
+                    res.send('Participant creted and added to the Conference!');
+                } else {
+                    res.status(400).send('Error in adding the participant to the conference');
+                }
+            });
         } else {
             res.status(400).send('Error in insert new participant!');
         }

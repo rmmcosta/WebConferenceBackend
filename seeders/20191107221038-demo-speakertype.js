@@ -2,15 +2,14 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('conf_participants', [{
-      ConferenceId: 1,
-      ParticipantId: 1,
+    return queryInterface.bulkInsert('speakertypes', [{
+      description: 'CEO',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('conf_participants', null, {});
+    return queryInterface.bulkDelete('speakertypes', null, {});
   }
 };

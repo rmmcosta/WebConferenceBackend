@@ -1,0 +1,8 @@
+npx sequelize-cli db:seed --seed 20191103164159-demo-participant.js
+npx sequelize-cli db:seed --seed 20191107220941-demo-conference.js
+npx sequelize-cli db:seed --seed 20191107221025-demo-sponsor.js
+npx sequelize-cli db:seed --seed 20191107221038-demo-speakertype.js
+npx sequelize-cli db:seed --seed 20191107221039-demo-speaker.js
+npx sequelize-cli db:seed --seed 20191107221056-demo-conf_sponsor.js
+npx sequelize-cli db:seed --seed 20191107221100-demo-conf_speaker.js
+npx sequelize-cli db:seed --seed 20191107221106-demo-conf_participant.js
