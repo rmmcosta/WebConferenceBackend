@@ -1,4 +1,3 @@
-const connect = require('../config/connectMySQL');
 const jsonMessagesFolder = __dirname + "/../assets/jsonMessages/";
 const jsonMessages = require(jsonMessagesFolder + "db");
 const { validationResult } = require('express-validator');
@@ -51,11 +50,11 @@ const saveParticipant = function (req, res) {
                             return;
                         }
                         if (participantcreated) {
-                            res.send('Participant registered with Success!');
+                            res.send('Registered with Success!');
                             return;
                         }
                         if (confparticipantcreated) {
-                            res.send('Participant registered with Success!');
+                            res.send('Registered with Success!');
                         } else {
                             res.send('Participant already registered for this conference!');
                         }
@@ -94,7 +93,36 @@ const saveParticipant = function (req, res) {
 }
 
 const readParticipants = function (req, res) {
-    res.send('ok');
+    if (req.params.idconf>0) {
+        ConfParticipant.findAll(
+            {
+                where: {
+                    ConferenceId: req.params.idconf
+                },
+                attributes: ['ParticipantId']
+            })
+            .then(result => {
+                //console.log(result[0].dataValues.ParticipantId);
+                let ids = [];
+                result.forEach(element => {
+                    ids.push(element.dataValues.ParticipantId);
+                });
+                console.log(ids);
+                Participant.findAll(
+                    {
+                        where: {
+                            id: ids
+                        }
+                    })
+                    .then(participants => {
+                        res.send(participants);
+                    });
+            });
+    } else {
+        Participant.findAll().then(participants => {
+            res.send(participants);
+        });
+    }
 }
 
 const deleteParticipant = function (req, res) {

@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const controllerParticipant = require('../controllers/participant.controller');
+const controllerSpeaker = require('../controllers/speaker.controller');
 const jsonMessagesFolder = __dirname + "/../assets/jsonMessages/";
 const jsonMessages = require(jsonMessagesFolder + "login");
-const { sanitizeParam, body, check, validationResult } = require('express-validator');
+const { sanitizeParam, body, check } = require('express-validator');
 
 //root route
 router.get('/', function (req, res) {
@@ -24,6 +25,10 @@ router.post('/conferences/:idconf/participants/:idparticipant', [
     check('idconf').not().isEmpty(),
     check('idparticipant').isEmail()
 ], controllerParticipant.saveParticipant);
+
+//speakers
+router.get('/conferences/:idconf/speakers',
+    controllerSpeaker.readSpeakers);
 
 //local functions
 function isLoggedIn(req, res, next) {
