@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const index = require('./../models/index');
 const Sequelize = index.Sequelize;
 const sequelize = index.sequelize;
