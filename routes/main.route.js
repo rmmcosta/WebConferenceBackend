@@ -35,6 +35,11 @@ router.get('/conferences/:idconf/speakers',
 router.get('/conferences/:idconf/sponsors',
     controllerSponsor.readSponsors);
 
+//contacts
+router.post('/contacts/emails',function(req,res) {
+    console.log(req.body);
+});
+
 //local functions
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
