@@ -38,6 +38,7 @@ router.get('/conferences/:idconf/sponsors',
 //contacts
 router.post('/contacts/emails',function(req,res) {
     console.log(req.body);
+    res.send();
 });
 
 //local functions
