@@ -6,6 +6,7 @@ module.exports = {
       name: 'Noesis',
       logo: '',
       category: 'IT Consulting',
+      link: 'www.noesis.pt',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});

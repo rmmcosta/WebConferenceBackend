@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const sponsor = sequelize.define('sponsor', {
     name: DataTypes.STRING,
     logo: DataTypes.STRING,
-    category: DataTypes.STRING
+    category: DataTypes.STRING,
+    link: DataTypes.STRING
   }, {});
   sponsor.associate = function(models) {
     sponsor.belongsToMany(models.Conference,{through:'conf_sponsor'});
