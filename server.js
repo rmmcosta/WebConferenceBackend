@@ -24,7 +24,7 @@ const corsOptions = {
         if (!origin)
             return callback(null, true);
 
-        if (allowedOrigins.indexOf(origin) === -1) {
+        if (whitelist.indexOf(origin) === -1) {
             var msg = 'The CORS policy for this site does not ' +
                 'allow access from the specified Origin.';
             return callback(new Error(msg), false);
@@ -37,10 +37,10 @@ const corsOptions = {
 //use cors
 // app.use(cors(corsOptions));
 
-app.all('/', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
+app.all('/', cors(corsOptions),function (req, res, next) {
+    //res.header("Access-Control-Allow-Origin", "*");
+    //res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
 });
 
 //start the app on the given port
