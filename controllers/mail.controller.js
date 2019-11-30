@@ -1,13 +1,12 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
-// async..await is not allowed in global scope, must use a wrapper
-async function sendMail() {
-    // Generate SMTP service account from ethereal.email
+const sendEmail = function (req, res) {
+    console.log(req.body);
     nodemailer.createTestAccount((err, account) => {
         if (err) {
             console.error('Failed to create a testing account. ' + err.message);
-            return process.exit(1);
+            res.status(500).end();
         }
 
         console.log('Credentials obtained, sending message...');
@@ -31,7 +30,7 @@ async function sendMail() {
         };
 
         // Create a SMTP transporter object
-        let transporter = nodemailer.createTransport(gmailConfig);
+        let transporter = nodemailer.createTransport(mailtrapConfig);
 
         // Message object
         let message = {
@@ -43,7 +42,7 @@ async function sendMail() {
         };
 
 
-        console.log('verify connection');
+        /*console.log('verify connection');
         // verify connection configuration
         transporter.verify(function (error, success) {
             if (error) {
@@ -51,28 +50,22 @@ async function sendMail() {
             } else {
                 console.log('Server is ready to take our messages');
             }
-        });
+        });*/
 
         console.log('Send email.');
 
         transporter.sendMail(message, (err, info) => {
             if (err) {
                 console.log('Error occurred. ' + err.message);
-                return process.exit(1);
+                res.status(500).end();
+            } else {
+                console.log('Message sent: %s', info.messageId);
+                // Preview only available when sending through an Ethereal account
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                res.send();
             }
-
-            console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         });
     });
-}
-
-const sendEmail = function (req, res) {
-    console.log(req.body);
-    sendMail()
-        .then(res.send())
-        .catch(res.status(500).end());
 };
 
 module.exports.sendEmail = sendEmail;
