@@ -12,15 +12,26 @@ async function sendMail() {
 
         console.log('Credentials obtained, sending message...');
 
-        // Create a SMTP transporter object
-        let transporter = nodemailer.createTransport({
+        const mailtrapConfig = {
             host: "smtp.mailtrap.io",
             port: 2525,
             auth: {
                 user: "10f46c6f1b407b",
                 pass: "57ffb9ec12707f"
             }
-        });
+        };
+
+        const gmailConfig = {
+            host: 'smtp.gmail.com',
+            port: 587,
+            auth: {
+                user: "webconferencerc@gmail.com",
+                pass: "914423167"
+            }
+        };
+
+        // Create a SMTP transporter object
+        let transporter = nodemailer.createTransport(gmailConfig);
 
         // Message object
         let message = {
