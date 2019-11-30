@@ -14,12 +14,11 @@ async function sendMail() {
 
         // Create a SMTP transporter object
         let transporter = nodemailer.createTransport({
-            host: account.smtp.host,
-            port: account.smtp.port,
-            secure: account.smtp.secure,
+            host: "smtp.mailtrap.io",
+            port: 2525,
             auth: {
-                user: account.user,
-                pass: account.pass
+                user: "10f46c6f1b407b",
+                pass: "57ffb9ec12707f"
             }
         });
 
@@ -31,6 +30,17 @@ async function sendMail() {
             text: 'Hello to myself!',
             html: '<p><b>Hello</b> to myself!</p>'
         };
+
+
+        console.log('verify connection');
+        // verify connection configuration
+        transporter.verify(function (error, success) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Server is ready to take our messages');
+            }
+        });
 
         console.log('Send email.');
 
