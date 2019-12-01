@@ -1,7 +1,19 @@
 "use strict";
 const nodemailer = require("nodemailer");
+const { validationResult } = require('express-validator');
 
 const sendEmail = function (req, res) {
+    //validate if any errors where indetified during the parse of the request
+    const errors = validationResult(req);
+    //console.log(errors);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    let inputedEmail = req.body.email;
+    let inputedName = req.body.name;
+    let inputedPhone = req.body.phone;
+    let inputedMsg = req.body.msg;
     console.log(req.body);
     nodemailer.createTestAccount((err, account) => {
         if (err) {
@@ -32,13 +44,23 @@ const sendEmail = function (req, res) {
         // Create a SMTP transporter object
         let transporter = nodemailer.createTransport(mailtrapConfig);
 
+        let emailHtml = '';
+        emailHtml += 'Dear ' + inputedName + ',<br><br>';
+        emailHtml += 'Thank you for your contact!<br><br>';
+        emailHtml += 'Message received: <blockquote><i>';
+        emailHtml += inputedMsg + '<br><hr>';
+        emailHtml += 'Your contacts are:<br>';
+        emailHtml += 'email:<a href="mailto:'+inputedEmail+'">'+inputedEmail+'</a><br>';
+        emailHtml += 'phone number:' + inputedPhone; 
+        emailHtml += '</i></blockquote>';
+        emailHtml += '<img src="../assets/images/mail-icon.png" alt="mail.icon" height=42 width=42>';
+
         // Message object
         let message = {
-            from: 'Sender Name <ricardocosta101085@gmail.com>',
-            to: 'Recipient <ricardo.costa@outsystems.com>',
-            subject: 'Nodemailer is unicode friendly ✔',
-            text: 'Hello to myself!',
-            html: '<p><b>Hello</b> to myself!</p>'
+            from: 'Site Manager <webconferencerc@gmail.com>',
+            to: 'Contactor <'+inputedEmail+'>',
+            subject: 'Web Conference RC - Site Contact',
+            html: emailHtml
         };
 
 

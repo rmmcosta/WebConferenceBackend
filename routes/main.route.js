@@ -20,13 +20,16 @@ router.get('/conferences/:idconf/participants',
 router.delete('/conferences/:idconf/participants/:idparticipant',
     isLoggedIn, controllerParticipant.deleteParticipant);
 
-router.post('/conferences/:idconf/participants/:idparticipant', [
-    sanitizeParam('idconf').trim().escape(),
-    sanitizeParam('idparticipant').trim().escape(),
-    body('name').trim().escape().not().isEmpty(),
-    check('idconf').not().isEmpty(),
-    check('idparticipant').isEmail()
-], controllerParticipant.saveParticipant);
+router.post('/conferences/:idconf/participants/:idparticipant',
+    [
+        sanitizeParam('idconf').trim().escape(),
+        sanitizeParam('idparticipant').trim().escape(),
+        body('name').trim().escape().not().isEmpty(),
+        check('idconf').not().isEmpty(),
+        check('idparticipant').isEmail()
+    ],
+    controllerParticipant.saveParticipant
+);
 
 //speakers
 router.get('/conferences/:idconf/speakers',
@@ -38,7 +41,15 @@ router.get('/conferences/:idconf/sponsors',
 
 //contacts
 router.post('/contacts/emails',
-    controllerMail.sendEmail);
+    [
+        body('name').trim().escape().not().isEmpty(),
+        body('email').trim().escape().not().isEmpty().isEmail(),
+        body('msg').trim().escape().not().isEmpty(),
+        //only validates phone if the value is inputed
+        body('phone').if((value, { req }) => req.body.phone).isMobilePhone()
+    ],
+    controllerMail.sendEmail
+);
 
 //local functions
 function isLoggedIn(req, res, next) {
