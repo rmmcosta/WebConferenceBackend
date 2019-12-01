@@ -3,7 +3,6 @@ const nodemailer = require("nodemailer");
 const { validationResult } = require('express-validator');
 const host = require("../config/environment").host;
 const port = require("../config/environment").port;
-const emailIcon = host + ':' + port + '/assets/images/mail-icon.png';
 const jsonMessages = require('../assets/jsonMessages/mail');
 
 const sendEmail = function (req, res) {
@@ -59,7 +58,8 @@ const sendEmail = function (req, res) {
         emailHtml += 'email:<a href="mailto:' + inputedEmail + '">' + inputedEmail + '</a><br>';
         emailHtml += 'phone number:' + inputedPhone;
         emailHtml += '</i></blockquote>';
-        emailHtml += '<img src="' + emailIcon + '" alt="mail.icon" height=42 width=42>';
+        //because we have the assets being used by express in the server.js
+        emailHtml += '<img src="/images/mail-icon.png" alt="mail.icon" height=42 width=42>';
 
         console.log(emailHtml);
 
