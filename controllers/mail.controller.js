@@ -1,13 +1,19 @@
 "use strict";
 const nodemailer = require("nodemailer");
 const { validationResult } = require('express-validator');
+const host = require("../config/environment").host;
+const port = require("../config/environment").port;
+const emailIcon = host + ':' + port + '/assets/images/mail-icon.png';
+const jsonMessages = require('../assets/jsonMessages/mail');
 
 const sendEmail = function (req, res) {
     //validate if any errors where indetified during the parse of the request
     const errors = validationResult(req);
     //console.log(errors);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
+        return res
+            .status(jsonMessages.mail.requiredData.status)
+            .send(errors);
     }
 
     let inputedEmail = req.body.email;
@@ -18,7 +24,7 @@ const sendEmail = function (req, res) {
     nodemailer.createTestAccount((err, account) => {
         if (err) {
             console.error('Failed to create a testing account. ' + err.message);
-            res.status(500).end();
+            res.status(jsonMessages.mail.serverError.status).send(jsonMessages.mail.serverError);
         }
 
         console.log('Credentials obtained, sending message...');
@@ -50,41 +56,50 @@ const sendEmail = function (req, res) {
         emailHtml += 'Message received: <blockquote><i>';
         emailHtml += inputedMsg + '<br><hr>';
         emailHtml += 'Your contacts are:<br>';
-        emailHtml += 'email:<a href="mailto:'+inputedEmail+'">'+inputedEmail+'</a><br>';
-        emailHtml += 'phone number:' + inputedPhone; 
+        emailHtml += 'email:<a href="mailto:' + inputedEmail + '">' + inputedEmail + '</a><br>';
+        emailHtml += 'phone number:' + inputedPhone;
         emailHtml += '</i></blockquote>';
-        emailHtml += '<img src="../assets/images/mail-icon.png" alt="mail.icon" height=42 width=42>';
+        emailHtml += '<img src="' + emailIcon + '" alt="mail.icon" height=42 width=42>';
+
+        console.log(emailHtml);
 
         // Message object
         let message = {
             from: 'Site Manager <webconferencerc@gmail.com>',
-            to: 'Contactor <'+inputedEmail+'>',
+            to: 'Contactor <' + inputedEmail + '>',
             subject: 'Web Conference RC - Site Contact',
             html: emailHtml
         };
 
 
-        /*console.log('verify connection');
+        console.log('verify connection');
         // verify connection configuration
         transporter.verify(function (error, success) {
             if (error) {
                 console.log(error);
+                res
+                    .status(jsonMessages.mail.serverError.status)
+                    .send(jsonMessages.mail.serverError);
             } else {
                 console.log('Server is ready to take our messages');
             }
-        });*/
+        });
 
         console.log('Send email.');
 
         transporter.sendMail(message, (err, info) => {
             if (err) {
                 console.log('Error occurred. ' + err.message);
-                res.status(500).end();
+                res
+                    .status(jsonMessages.mail.mailError.status)
+                    .send(jsonMessages.mail.mailError);
             } else {
                 console.log('Message sent: %s', info.messageId);
                 // Preview only available when sending through an Ethereal account
                 console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-                res.send();
+                res
+                    .status(jsonMessages.mail.mailSent.status)
+                    .send(jsonMessages.mail.mailSent);
             }
         });
     });
