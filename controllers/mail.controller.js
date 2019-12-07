@@ -59,7 +59,7 @@ const sendEmail = function (req, res) {
         emailHtml += 'phone number:' + inputedPhone;
         emailHtml += '</i></blockquote>';
         //because we have the assets being used by express in the server.js
-        emailHtml += '<img src="/images/mail-icon.png" alt="mail.icon" height=42 width=42>';
+        emailHtml += '<img src="https://rcwebconference.herokuapp.com/assets/images/mail-icon.png" alt="mail.icon" height=42 width=42>';
 
         console.log(emailHtml);
 
