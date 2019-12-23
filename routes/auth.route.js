@@ -6,12 +6,14 @@ const authController = require('../controllers/auth.controller');
 
 module.exports = (app, passport) => {
     //signin
+    console.log(passport);
+    passport.authenticate();
     app.post('/signin', passport.authenticate('local-signin', {
         successRedirect: '/signinSuccess',
-        failureRedirect: '/signin'
+        failureRedirect: '/signinFailure'
     }));
 
-    app.get('/signin', authController.signin);
+    app.get('/signinFailure', authController.signinFailure);//error on signin
     app.get('/signinSuccess', isLoggedIn, authController.signinSuccess);
 
     function isLoggedIn(req, res, next) {
@@ -23,9 +25,9 @@ module.exports = (app, passport) => {
     //signup
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect: '/signupSuccess',
-        failureRedirect: '/signup'
+        failureRedirect: '/signupFailure'
     }));
 
-    app.get('/signup', authController.signup);
+    app.get('/signupFailure', authController.signupFailure);
     app.get('/signupSuccess', authController.signupSuccess);
 };

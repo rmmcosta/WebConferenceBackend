@@ -7,7 +7,11 @@ const passport = require('passport');
 const session = require('express-session');
 const expressSanitizer = require('express-sanitizer');
 const bodyParser = require('body-parser');
-const modelUser = require('./models/user');
+const userModel = require('./models/user');
+const index = require('./models/index');
+const Sequelize = index.Sequelize;
+const sequelize = index.sequelize;
+const userSequelize = userModel(sequelize, Sequelize);
 
 app.use(cookieParser());
 app.use(expressSanitizer());
@@ -45,7 +49,7 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());//persistent login sessions
 require('./routes/auth.route')(app, passport);
-require('./config/passport/passport')(passport, modelUser);
+require('./config/passport/passport')(passport, userSequelize);
 
 app.use('/', router);
 app.use('/', routerAuth);
