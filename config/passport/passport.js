@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (passport, userSequelize) {
-    console.log('userSequelize', userSequelize);
+    // console.log('userSequelize', userSequelize);
     const LocalStrategy = require('passport-local').Strategy;
 
     passport.serializeUser(function (user, done) {
@@ -61,13 +61,15 @@ module.exports = function (passport, userSequelize) {
     }, (req, email, password, done) => {
         userSequelize.findOne({ where: { email: email } })
             .then((user) => {
+                console.log('find user and validate password');
                 if (user) {
                     //validate password
                     let isValid = bcrypt.compareSync(password, user.password);
                     if (isValid) {
-                        console.log(user);
-                        console.log(user.get());
-                        return done(null, user.get());
+                        // console.log(user);
+                        // console.log(user.get());
+                        console.log('login is valid');
+                        return done(null, user);
                     }
                 }
                 return done(null, false);

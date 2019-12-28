@@ -1,6 +1,5 @@
 const app = require('./server');
 const router = require('./routes/main.route');
-const routerAuth = require('./routes/auth.route');
 const routerTest = require('./routes/unittests.route');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
@@ -50,7 +49,5 @@ app.use(passport.initialize());
 app.use(passport.session());//persistent login sessions
 require('./routes/auth.route')(app, passport);
 require('./config/passport/passport')(passport, userSequelize);
-
 app.use('/', router);
-app.use('/', routerAuth);
 app.use('/test', routerTest);

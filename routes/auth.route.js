@@ -1,25 +1,33 @@
-//const router = require('express').Router();
 const authController = require('../controllers/auth.controller');
 
-//signin router
-//router.post('/signin',authController.signin);
-
 module.exports = (app, passport) => {
-    //signin
-    console.log(passport);
-    passport.authenticate();
+
     app.post('/signin', passport.authenticate('local-signin', {
         successRedirect: '/signinSuccess',
         failureRedirect: '/signinFailure'
     }));
 
+    // app.post('/signin', function (req, res, next) {
+    //     passport.authenticate('local-signin', function (err, user, info) {
+    //         console.log('authenticate:', info);
+    //         if (err) { console.log(err);return next(err); }
+    //         if (!user) { return res.send('not ok'); }
+    //         req.logIn(user, function (err) {
+    //             if (err) { return next(err); }
+    //             return res.send('ok');
+    //         });
+    //     })(req, res, next);
+    // });
+
     app.get('/signinFailure', authController.signinFailure);//error on signin
     app.get('/signinSuccess', isLoggedIn, authController.signinSuccess);
 
     function isLoggedIn(req, res, next) {
-        if(req.isAuthenticated())
+        if (req.isAuthenticated()) {
+            console.log('is authenticated');
             return next();
-        res.redirect('/signin');
+        }
+        res.redirect('/signinFailure');
     }
 
     //signup

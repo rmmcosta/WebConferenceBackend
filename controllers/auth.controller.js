@@ -11,6 +11,7 @@ const signupFailure = function(req,res) {
 };
 
 const signinSuccess = function(req,res) {
+    console.log('signin success!');
     res.status(jsonMessages.login.signinSucces.status)
     .end(jsonMessages.login.signinSucces.message.eng);
 };
