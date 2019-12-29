@@ -21,16 +21,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-//session
-app.use(session({
-    secret: 'web conference rmmcosta',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: true,
-        maxAge: 1 * 60 * 60 * 1000//miliseconds
-    }
-}));
+//auth
+app.use(session({ secret: 'webConferenceRmmcosta', resave: true, saveUninitialized: true }));
 
 //if we want to reuse the session
 app.use((req, res, next) => {
@@ -44,10 +36,22 @@ app.use((req, res, next) => {
     next();
 });
 
-//auth
 app.use(passport.initialize());
-app.use(passport.session());//persistent login sessions
+app.use(passport.session()); // persistent login sessions
+
 require('./routes/auth.route')(app, passport);
 require('./config/passport/passport')(passport, userSequelize);
+
+//session
+// app.use(session({
+//     secret: 'web conference rmmcosta',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         secure: true,
+//         maxAge: 1 * 60 * 60 * 1000//miliseconds
+//     }
+// }));
+
 app.use('/', router);
 app.use('/test', routerTest);

@@ -1,15 +1,31 @@
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 module.exports = function (passport, userSequelize) {
     // console.log('userSequelize', userSequelize);
     const LocalStrategy = require('passport-local').Strategy;
 
+    // =========================================================================
+    // passport session setup ==================================================
+    // =========================================================================
+    // required for persistent login sessions
+    // passport needs ability to serialize and unserialize users out of session
+
+    // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
+        console.log('serialize user');
         done(null, user.id);
     });
 
+    // used to deserialize the user
+    // passport.deserializeUser(function (id, done) {
+    //     userSequelize.findById(id, function (err, user) {
+    //         done(err, user);
+    //     });
+    // });
+
     passport.deserializeUser(function (id, done) {
-        userSequelize.findById(id).then((user) => {
+        console.log('user sequelize',userSequelize);
+        userSequelize.findByPk(id).then((user) => {
             if (user) {
                 done(null, user.get());
             } else {
@@ -30,6 +46,7 @@ module.exports = function (passport, userSequelize) {
         }
         userSequelize.findOne({ where: { email: email } })
             .then((err, user) => {
+                console.log('find one',err);
                 if (err) { return done(err); }
                 if (user) { return done(null, false); }
                 const userRec = {
