@@ -1,35 +1,35 @@
 const jsonMessages = require('../assets/jsonMessages/login');
 
 const signinFailure = function (req, res) {
-    res.sendStatus(jsonMessages.login.invalid.status)
-        .end(jsonMessages.login.invalid.message.eng);
+    res.status(jsonMessages.login.invalid.status)
+        .send(jsonMessages.login.invalid.message.eng);
 };
 
 const signupFailure = function (req, res) {
-    res.sendStatus(jsonMessages.login.duplicate.status)
+    res.status(jsonMessages.login.duplicate.status)
         .send(jsonMessages.login.duplicate.message.eng);
 };
 
 const signinSuccess = function (req, res) {
     console.log('signin success!');
-    res.sendStatus(jsonMessages.login.signinSucces.status)
-        .end(jsonMessages.login.signinSucces.message.eng);
+    res.status(jsonMessages.login.signinSucces.status)
+        .send(jsonMessages.login.signinSucces.message.eng);
 };
 
 const signupSuccess = function (req, res) {
-    res.sendStatus(jsonMessages.login.signupSuccess.status)
-        .end(jsonMessages.login.signupSuccess.message.eng);
+    res.status(jsonMessages.login.signupSuccess.status)
+        .send(jsonMessages.login.signupSuccess.message.eng);
 };
 
 const logout = (req, res, err) => {
     req.session.destroy((err) => {
         if (err) {
             console.log('logout err',err);
-            res.sendStatus(jsonMessages.login.logoutError.status)
-                .end(jsonMessages.login.logoutError.message.eng);
+            res.status(jsonMessages.login.logoutError.status)
+                .send(jsonMessages.login.logoutError.message.eng);
         }
-        res.sendStatus(jsonMessages.login.logoutSuccess.status)
-            .end(jsonMessages.login.logoutSuccess.message.eng);
+        res.status(jsonMessages.login.logoutSuccess.status)
+            .send(jsonMessages.login.logoutSuccess.message.eng);
     });
 }
 
