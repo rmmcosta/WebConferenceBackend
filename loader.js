@@ -13,6 +13,7 @@ const sequelize = index.sequelize;
 const userSequelize = userModel(sequelize, Sequelize);
 
 app.use(cookieParser());
+app.enable('trust proxy'); // add this line for heroku
 app.use(expressSanitizer());
 
 // parse application/x-www-form-urlencoded
@@ -22,7 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //auth
-app.use(session({ secret: 'webConferenceRmmcosta', resave: true, saveUninitialized: true }));
+app.use(session({
+    secret: 'webConferenceRmmcosta',
+    resave: true,
+    saveUninitialized: true,
+    proxy: true, // add this line for heroku
+}));
 
 //if we want to reuse the session
 app.use((req, res, next) => {
