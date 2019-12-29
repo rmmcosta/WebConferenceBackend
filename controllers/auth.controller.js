@@ -17,7 +17,7 @@ const signinSuccess = function (req, res) {
 };
 
 const signupSuccess = function (req, res) {
-    res.send(jsonMessages.login.signupSuccess.status)
+    res.sendStatus(jsonMessages.login.signupSuccess.status)
         .end(jsonMessages.login.signupSuccess.message.eng);
 };
 
