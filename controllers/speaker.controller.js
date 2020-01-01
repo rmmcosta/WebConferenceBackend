@@ -39,4 +39,19 @@ const readSpeakers = function (req, res) {
     }
 }
 
+const deleteSpeaker= function (req, res) {
+    ConfSpeaker.destroy({
+        where: {
+            speakerid: req.params.idspeaker
+        }
+    });
+    Speaker.destroy({
+        where: {
+            id: req.params.idspeaker
+        }
+    });
+    res.send('ok');
+}
+
 module.exports.readSpeakers = readSpeakers;
+module.exports.deleteSpeaker = deleteSpeaker;

@@ -38,5 +38,19 @@ const readSponsors = function (req, res) {
         });
     }
 }
+const deleteSponsor = function (req, res) {
+    ConfSponsor.destroy({
+        where: {
+            sponsorid: req.params.idsponsor
+        }
+    });
+    Sponsor.destroy({
+        where: {
+            id: req.params.idsponsor
+        }
+    });
+    res.send('ok');
+}
 
 module.exports.readSponsors = readSponsors;
+module.exports.deleteSponsor = deleteSponsor;

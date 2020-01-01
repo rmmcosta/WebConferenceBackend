@@ -93,7 +93,7 @@ const saveParticipant = function (req, res) {
 }
 
 const readParticipants = function (req, res) {
-    if (req.params.idconf>0) {
+    if (req.params.idconf > 0) {
         ConfParticipant.findAll(
             {
                 where: {
@@ -126,6 +126,16 @@ const readParticipants = function (req, res) {
 }
 
 const deleteParticipant = function (req, res) {
+    ConfParticipant.destroy({
+        where: {
+            participantid: req.params.idparticipant
+        }
+    });
+    Participant.destroy({
+        where: {
+            id: req.params.idparticipant
+        }
+    });
     res.send('ok');
 }
 

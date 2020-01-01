@@ -35,9 +35,15 @@ router.post('/conferences/:idconf/participants/:idparticipant',
 router.get('/conferences/:idconf/speakers',
     controllerSpeaker.readSpeakers);
 
+router.delete('/conferences/:idconf/speakers/:idspeaker',
+    isLoggedIn, controllerSpeaker.deleteSpeaker);
+
 //sponsors
 router.get('/conferences/:idconf/sponsors',
     controllerSponsor.readSponsors);
+
+router.delete('/conferences/:idconf/sponsors/:idsponsor',
+    isLoggedIn, controllerSponsor.deleteSponsor);
 
 //contacts
 router.post('/contacts/emails',
