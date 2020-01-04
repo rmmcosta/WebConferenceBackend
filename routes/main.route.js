@@ -64,7 +64,7 @@ function isLoggedIn(req, res, next) {
     } else {
         res.status(jsonMessages.login.unauthorized.status)
             .send(jsonMessages.login.unauthorized);
-        return next();
+        res.redirect('/');
     }
 }
 
