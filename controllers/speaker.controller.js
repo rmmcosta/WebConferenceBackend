@@ -5,9 +5,72 @@ const SpeakerModel = require('./../models/speaker');
 const ConfSpeakerModel = require('./../models/conf_speaker');
 const ConfSpeaker = ConfSpeakerModel(sequelize, Sequelize);
 const Speaker = SpeakerModel(sequelize, Sequelize);
+const { validationResult } = require('express-validator');
+
+const saveSpeaker = function (req, res) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    if (req.params.idspeaker > 0) {
+        updateSpeaker(req);
+    } else {
+        createSpeaker(req);
+    }
+
+    function createSpeaker(req) {
+        Speaker.create({
+            name: req.body.name,
+            filliation: req.body.filliation,
+            bio: req.body.bio,
+            foto: '',
+            link: req.body.link,
+            speakertypeId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+            .then(newSpeaker => {
+                console.log(`New speaker ${newSpeaker.name}, with id ${newSpeaker.id} has been created.`);
+                ConfSpeaker.create({
+                    conferenceId: req.params.idconf,
+                    speakerId: newSpeaker.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                })
+                    .then(() => {
+                        res.send(newSpeaker);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.status(500).send('Internal Server Error');
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(500).send('Internal Server Error');
+            })
+            ;
+    }
+
+    function updateSpeaker(req) {
+        Speaker.update({
+            name: req.body.name,
+            filliation: req.body.filliation,
+            bio: req.body.bio,
+            link: req.body.link,
+            updatedAt: new Date()
+        }, { where: { id: req.params.idspeaker } })
+            .then(updatedSpeaker => {
+                console.log(updatedSpeaker);
+                res.send(updateSpeaker);
+            })
+    }
+}
 
 const readSpeakers = function (req, res) {
-    if (req.params.idconf>0) {
+    if (req.params.idconf > 0) {
         ConfSpeaker.findAll(
             {
                 where: {
@@ -39,7 +102,7 @@ const readSpeakers = function (req, res) {
     }
 }
 
-const deleteSpeaker= function (req, res) {
+const deleteSpeaker = function (req, res) {
     ConfSpeaker.destroy({
         where: {
             speakerid: req.params.idspeaker
@@ -55,3 +118,4 @@ const deleteSpeaker= function (req, res) {
 
 module.exports.readSpeakers = readSpeakers;
 module.exports.deleteSpeaker = deleteSpeaker;
+module.exports.saveSpeaker = saveSpeaker;

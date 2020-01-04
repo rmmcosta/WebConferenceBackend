@@ -57,6 +57,28 @@ router.post('/contacts/emails',
     controllerMail.sendEmail
 );
 
+//save speaker
+router.post('/conferences/:idconf/speakers/:idspeaker',
+    [
+        sanitizeParam('idconf').trim().escape(),
+        sanitizeParam('idspeaker').trim().escape(),
+        body('name').trim().escape().not().isEmpty(),
+        check('idconf').not().isEmpty()
+    ],
+    controllerSpeaker.saveSpeaker
+);
+
+//save sponsor
+router.post('/conferences/:idconf/sponsors/:idsponsor',
+    [
+        sanitizeParam('idconf').trim().escape(),
+        sanitizeParam('idsponsor').trim().escape(),
+        body('name').trim().escape().not().isEmpty(),
+        check('idconf').not().isEmpty()
+    ],
+    controllerSponsor.saveSponsor
+);
+
 //local functions
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {

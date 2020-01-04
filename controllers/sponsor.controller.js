@@ -5,9 +5,71 @@ const SponsorModel = require('./../models/sponsor');
 const ConfSponsorModel = require('./../models/conf_sponsor');
 const ConfSponsor = ConfSponsorModel(sequelize, Sequelize);
 const Sponsor = SponsorModel(sequelize, Sequelize);
+const { validationResult } = require('express-validator');
+
+const saveSponsor = function (req, res) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    if (req.params.idsponsor > 0) {
+        updateSponsor(req);
+    } else {
+        createSponsor(req);
+    }
+
+    function createSponsor(req) {
+        Sponsor.create({
+            name: req.body.name,
+            logo: req.body.logo,
+            category: req.body.category,
+            link: req.body.link,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+            .then(newSponsor => {
+                console.log(`New sponsor ${newSponsor.name}, with id ${newSponsor.id} has been created.`);
+                ConfSponsor.create({
+                    ConferenceId: req.params.idconf,
+                    SponsorId: newSponsor.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                })
+                    .then(() => {
+                        res.send(newSponsor);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.status(500).send('Internal Server Error');
+                    })
+                    ;
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(500).send('Internal Server Error');
+            })
+            ;
+    }
+
+    function updateSponsor(req) {
+        Sponsor.update({
+            name: req.body.name,
+            logo: req.body.logo,
+            category: req.body.category,
+            link: req.body.link,
+            updatedAt: new Date()
+        }, { where: { id: req.params.idsponsor } })
+            .then(updatedSponsor => {
+                console.log(updatedSponsor)
+                res.send(updateSponsor);
+            })
+    }
+}
 
 const readSponsors = function (req, res) {
-    if (req.params.idconf>0) {
+    if (req.params.idconf > 0) {
         ConfSponsor.findAll(
             {
                 where: {
@@ -54,3 +116,4 @@ const deleteSponsor = function (req, res) {
 
 module.exports.readSponsors = readSponsors;
 module.exports.deleteSponsor = deleteSponsor;
+module.exports.saveSponsor = saveSponsor;
