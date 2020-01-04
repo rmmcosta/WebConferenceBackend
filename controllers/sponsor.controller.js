@@ -63,7 +63,7 @@ const saveSponsor = function (req, res) {
         }, { where: { id: req.params.idsponsor } })
             .then(updatedSponsor => {
                 console.log(updatedSponsor)
-                res.send(updateSponsor);
+                res.send('ok');
             })
     }
 }

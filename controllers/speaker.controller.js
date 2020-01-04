@@ -64,7 +64,7 @@ const saveSpeaker = function (req, res) {
         }, { where: { id: req.params.idspeaker } })
             .then(updatedSpeaker => {
                 console.log(updatedSpeaker);
-                res.send(updateSpeaker);
+                res.send('ok');
             })
     }
 }
