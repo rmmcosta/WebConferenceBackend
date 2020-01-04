@@ -102,6 +102,18 @@ const readSpeakers = function (req, res) {
     }
 }
 
+const readSpeaker = function (req, res) {
+    Speaker.findAll(
+        {
+            where: {
+                id: req.params.idspeaker
+            }
+        })
+        .then(Speakers => {
+            res.send(Speakers);
+        });
+}
+
 const deleteSpeaker = function (req, res) {
     ConfSpeaker.destroy({
         where: {
@@ -119,3 +131,4 @@ const deleteSpeaker = function (req, res) {
 module.exports.readSpeakers = readSpeakers;
 module.exports.deleteSpeaker = deleteSpeaker;
 module.exports.saveSpeaker = saveSpeaker;
+module.exports.readSpeaker = readSpeaker;

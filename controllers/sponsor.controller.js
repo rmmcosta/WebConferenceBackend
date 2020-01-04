@@ -100,6 +100,19 @@ const readSponsors = function (req, res) {
         });
     }
 }
+
+const readSponsor = function (req, res) {
+    Sponsor.findAll(
+        {
+            where: {
+                id: req.params.idsponsor
+            }
+        })
+        .then(Sponsors => {
+            res.send(Sponsors);
+        });
+}
+
 const deleteSponsor = function (req, res) {
     ConfSponsor.destroy({
         where: {
@@ -117,3 +130,4 @@ const deleteSponsor = function (req, res) {
 module.exports.readSponsors = readSponsors;
 module.exports.deleteSponsor = deleteSponsor;
 module.exports.saveSponsor = saveSponsor;
+module.exports.readSponsor = readSponsor;
